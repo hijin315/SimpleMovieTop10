@@ -43,42 +43,57 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.btn1 -> {
-
                 // 오늘 날짜에서 하루를 뺀 날짜를 "yyyyMMdd" 형식으로 만든다.
                 val cal: Calendar = Calendar.getInstance()
                 cal.add(Calendar.DAY_OF_MONTH, -1)
                 val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
                 val targetDt = dateFormat.format(cal.time)
-
-                // 요청 수행
-                RetrofitBuilder.api
-                    .getMovieList(targetDt, KEY)
-                    .enqueue(object : Callback<MovieResponse> {
-                        override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                            Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT).show()
-                        }
-
-                        override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
-                            val movieResponse = response.body()
-                            val list : List<MovieDto> = movieResponse!!.boxofficeResult!!.dailyBoxOfficeList
-                            Log.d("MY", "$list")
-
-                            val intent:Intent = Intent(this@MainActivity,RankActivity::class.java)
-                            //bundle -> 보따리 느낌
-                            val bundle = Bundle()
-                            bundle.putSerializable("movieList",(list as Serializable)) //list를 강제 형변환
-                            //bundle.putString("name","홍길동")
-                            //bundle.putInt("age",10)  이 두줄과 같이 put 뒤에 전달하려는 값의 자료형을 쓰면된다.
-                            intent.putExtras(bundle)
-                            startActivity(intent)
-                        }
-                    })
+                getResult(targetDt)
             }
             R.id.btn2 -> {
+                val cal: Calendar = Calendar.getInstance()
+                cal.add(Calendar.DAY_OF_MONTH, -14)
+                val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+                val targetDt = dateFormat.format(cal.time)
+                getResult(targetDt)
+
             }
             R.id.btn3 -> {
+                val cal: Calendar = Calendar.getInstance()
+                cal.add(Calendar.DAY_OF_MONTH, -30)
+                val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+                val targetDt = dateFormat.format(cal.time)
+                getResult(targetDt)
             }
         }
+
+        }
+    fun getResult(targetDt:String){
+        RetrofitBuilder.api
+            .getMovieList(targetDt, KEY)
+            .enqueue(object : Callback<MovieResponse> {
+                override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                    Toast.makeText(this@MainActivity, "${t.message}", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+                    val movieResponse = response.body()
+                    val list : List<MovieDto> = movieResponse!!.boxofficeResult!!.dailyBoxOfficeList
+                    Log.d("MY", "$list")
+
+                    val intent: Intent = Intent(this@MainActivity, RankActivity::class.java)
+                    //bundle -> 보따리 느낌
+                    val bundle = Bundle()
+                    bundle.putSerializable(
+                        "movieList",
+                        (list as Serializable)
+                    ) //list를 강제 형변환
+                    //bundle.putString("name","홍길동")
+                    //bundle.putInt("age",10)  이 두줄과 같이 put 뒤에 전달하려는 값의 자료형을 쓰면된다.
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                }
+            })
     }
 
 

@@ -6,8 +6,11 @@ import java.io.Serializable
 data class MovieDto(
     @SerializedName("movieNm")
     var movieNm: String?,
-    @SerializedName("salesAmt")
-    var salesAmt: String?
+    @SerializedName("rankInten")
+    var rankInten: String?,
+    @SerializedName("rank")
+    var rank: String?
+
 ) : Serializable {
 
 }
