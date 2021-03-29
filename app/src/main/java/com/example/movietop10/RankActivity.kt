@@ -32,14 +32,13 @@ class RankActivity : AppCompatActivity() {
 
     inner class ResultRecyclerViewAdpater :
         RecyclerView.Adapter<ResultRecyclerViewAdpater.ResultViewHolder>() {
-        //val contentDtoList: ArrayList<MovieDto> = arrayListOf()
-        //val contentUidList: ArrayList<String> = arrayListOf()
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
         ): ResultRecyclerViewAdpater.ResultViewHolder {
             //마지막 인자 -> parent에 합성(?)을 시킬지
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
+            val view =
+                LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
             return ResultViewHolder(view)
         }
 
@@ -52,16 +51,16 @@ class RankActivity : AppCompatActivity() {
             holder: ResultRecyclerViewAdpater.ResultViewHolder,
             position: Int
         ) {
-           holder.apply {
-               rankTextView.text = list[position].rank
-               val rankInten = list[position].rankInten
-               rankIntenTextView.text = rankInten
-               movieNameTextView.text = list[position].movieNm
-               if(rankInten?.toInt()!! <0){
-                   rankIntenImageView.setImageResource(R.drawable.ic_sort_down_solid)
-                   rankIntenTextView.setTextColor(R.color.red)
-               }
-           }
+            holder.apply {
+                rankTextView.text = list[position].rank
+                val rankInten = list[position].rankInten
+                rankIntenTextView.text = rankInten
+                movieNameTextView.text = list[position].movieNm
+                if (rankInten?.toInt()!! < 0) {
+                    rankIntenImageView.setImageResource(R.drawable.ic_sort_down_solid)
+                    rankIntenTextView.setTextColor(R.color.red)
+                }
+            }
         }
 
         inner class ResultViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -71,7 +70,7 @@ class RankActivity : AppCompatActivity() {
             val rankTextView: TextView = view.findViewById(R.id.rank)
             val movieNameTextView: TextView = view.findViewById(R.id.movie_name)
             val rankIntenTextView: TextView = view.findViewById(R.id.tv_rankInten)
-            val rankIntenImageView : ImageView = view.findViewById(R.id.iv_rankInten)
+            val rankIntenImageView: ImageView = view.findViewById(R.id.iv_rankInten)
         }
     }
 }
